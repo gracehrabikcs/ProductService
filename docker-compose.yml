@@ -1,0 +1,26 @@
+version: '3.8'  # Docker Compose version
+
+services:
+  product-service:
+    build:
+      context: ./ProductService  # Path to the ProductService project
+      dockerfile: Dockerfile      # Dockerfile for ProductService
+    ports:
+      - "5001:80"                 # Expose ProductService on localhost:5001
+    networks:
+      - my-network
+
+  order-service:
+    build:
+      context: ./OrderService     # Path to the OrderService project
+      dockerfile: Dockerfile      # Dockerfile for OrderService
+    ports:
+      - "5002:80"                 # Expose OrderService on localhost:5002
+    depends_on:
+      - product-service           # OrderService depends on ProductService
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
